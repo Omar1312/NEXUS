@@ -99,14 +99,16 @@ def test_root_symlink_is_rejected(tmp_path: Path) -> None:
 
 
 def test_entry_symlink_is_skipped(tmp_path: Path) -> None:
+    scan_root = tmp_path / "root"
+    scan_root.mkdir()
     target = tmp_path / "outside"
     target.mkdir()
     (target / "large.bin").write_bytes(b"outside")
-    link = tmp_path / "link"
+    link = scan_root / "link"
     try:
         link.symlink_to(target, target_is_directory=True)
     except (OSError, NotImplementedError):
         pytest.skip("Symlink creation is unavailable in this environment")
-    result = StorageScanner().scan(tmp_path)
+    result = StorageScanner().scan(scan_root)
     assert result.total_files == 0
     assert result.skipped_links == 1

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import types
+import pytest
 
 from nexus.core.collectors import SystemCollector
 from nexus.hardware.gpu import GpuCollector
@@ -9,6 +10,8 @@ from nexus.hardware.sensors import CpuTemperatureSensor
 
 
 def test_missing_nvml_keeps_other_system_metrics_available(monkeypatch) -> None:
+    if sys.platform == "darwin":
+        pytest.skip("NVML-backed Windows GPU assertions do not apply to the macOS collector")
     monkeypatch.setitem(sys.modules, "pynvml", None)
     collector = SystemCollector(enable_wmi_sensors=False)
     try:

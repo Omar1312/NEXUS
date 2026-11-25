@@ -53,7 +53,7 @@ def test_cpu_collector_preserves_total_and_per_core_psutil_values():
         patch("nexus.hardware.cpu.cpu_brand", return_value="Fixture CPU"),
         patch("nexus.hardware.cpu._PdhQuery", FakePdh),
         patch("nexus.hardware.cpu.psutil.cpu_count", side_effect=lambda logical: 8 if logical else 4),
-        patch("nexus.hardware.cpu.psutil.cpu_freq", return_value=None),
+        patch("nexus.hardware.cpu.psutil.cpu_freq", return_value=None, create=True),
         patch("nexus.hardware.cpu.psutil.cpu_percent", side_effect=cpu_percent),
     ):
         collector = CpuCollector(temperature_sensor=temperature)

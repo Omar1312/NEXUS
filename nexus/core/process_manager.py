@@ -105,8 +105,10 @@ def assess_termination(info: ProcessInfo, *, current_pid: int | None = None) -> 
     if info.pid <= 4:
         return TerminationAssessment(False, "Core kernel or system process (PID 4 or lower).")
     lowered = info.name.lower()
-    protected_names = _MACOS_PROTECTED_NAMES if sys.platform == "darwin" else _PROTECTED_NAMES
-    caution_names = _MACOS_CAUTION_NAMES if sys.platform == "darwin" else _CAUTION_NAMES
+    # Keep the safety deny-list comprehensive when inspecting fixtures or
+    # processes originating from another platform.
+    protected_names = _PROTECTED_NAMES | _MACOS_PROTECTED_NAMES
+    caution_names = _CAUTION_NAMES | _MACOS_CAUTION_NAMES
     if lowered in protected_names:
         return TerminationAssessment(False, "Core system process.")
     if lowered in caution_names:
@@ -127,7 +129,7 @@ def assess_termination(info: ProcessInfo, *, current_pid: int | None = None) -> 
 def _protected_reason(name: str, pid: int) -> str:
     if pid <= 4:
         return "Core kernel or system process."
-    protected_names = _MACOS_PROTECTED_NAMES if sys.platform == "darwin" else _PROTECTED_NAMES
+    protected_names = _PROTECTED_NAMES | _MACOS_PROTECTED_NAMES
     if name.lower() in protected_names:
         return "Blocked: critical system component."
     return ""

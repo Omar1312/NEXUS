@@ -53,6 +53,14 @@ class MacSystemCollector:
             log.debug("Could not prime macOS CPU counters: %s", exc)
 
     def _model_name(self) -> str:
+        # Injected platform modules are used by tests and embedders; avoid
+        # consulting the host machine in that deterministic mode.
+        if self._platform is not platform:
+            if self._architecture.casefold() in {"arm64", "aarch64"}:
+                return "Apple Silicon CPU (model unavailable)"
+            if self._architecture.casefold() in {"x86_64", "amd64"}:
+                return "Intel CPU (model unavailable)"
+            return "CPU model unavailable"
         for value in (
             self._platform.processor(),
             getattr(self._platform.uname(), "processor", ""),
