@@ -1,0 +1,13 @@
+# NEXUS runtime dependencies (Windows/macOS, Python 3.11+)
+PySide6>=6.12,<6.13
+psutil>=6.0
+pyqtgraph>=0.13
+numpy>=1.26
+pywin32>=306; sys_platform == "win32"
+nvidia-ml-py>=12.535; sys_platform == "win32"
+packaging>=23.2
+
+# Development / test dependencies
+pytest>=8.0
+pytest-qt>=4.4
+pyinstaller>=6.0

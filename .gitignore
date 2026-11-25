@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+release/*
+work/
+installer/version.iss
+.venv/
+venv/
+*.exe
+*.dll
+*.pyd
+*.whl
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.*
+
+# Test / tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# NEXUS runtime artifacts (never commit local data)
+*.db
+*.db-wal
+*.db-shm
+*.log
+logs/
+exports/
+screenshots/
+reports/*.html
+reports/*.json
+reports/*.csv
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

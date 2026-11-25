@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nexus-monitor"
+dynamic = ["version"]
+description = "NEXUS - a local-first desktop performance monitor and diagnostics tool"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "NEXUS contributors" }]
+keywords = ["windows", "monitoring", "performance", "pyside6", "diagnostics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "PySide6>=6.12,<6.13",
+    "psutil>=6.0",
+    "pyqtgraph>=0.13",
+    "numpy>=1.26",
+    "pywin32>=306; sys_platform == 'win32'",
+    "nvidia-ml-py>=12.535; sys_platform == 'win32'",
+    "packaging>=23.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-qt>=4.4", "pyinstaller>=6.0"]
+build = ["pyinstaller>=6.0"]
+
+[project.scripts]
+nexus = "nexus.app:main"
+
+[project.gui-scripts]
+nexus-gui = "nexus.app:main"
+
+[tool.setuptools]
+packages = ["nexus", "nexus.core", "nexus.hardware", "nexus.database", "nexus.ui", "nexus.ui.widgets", "nexus.services", "nexus.utils", "nexus.platforms", "nexus.platforms.macos"]
+
+[tool.setuptools.dynamic]
+version = { attr = "nexus.__version__" }
+
+[tool.setuptools.package-data]
+nexus = ["assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning:pyqtgraph.*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]
